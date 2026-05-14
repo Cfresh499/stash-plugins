@@ -1,0 +1,6 @@
+- id: categoryClash
+  name: Category Clash
+  metadata:
+    description: Head-to-head performer battles with category-specific images
+  version: 0.4.0
+  path: categoryClash
