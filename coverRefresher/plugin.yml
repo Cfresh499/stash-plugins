@@ -3,7 +3,7 @@ description: Refresh scene covers from StashDB for ALL scenes (including organiz
 version: 0.1.0
 exec:
   - python3
-  - cover_refresher.py
+  - /root/.stash/plugins/community/coverRefresher/cover_refresher.py
 interface: raw
 tasks:
   - name: Refresh Scene Covers
