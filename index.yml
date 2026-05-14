@@ -1,3 +1,10 @@
+- id: coverRefresher
+  name: Cover Refresher
+  metadata:
+    description: Refresh scene covers from StashDB for ALL scenes (including organized)
+  version: 0.1.0
+  path: coverRefresher
+
 - id: categoryClash
   name: Category Clash
   metadata:
