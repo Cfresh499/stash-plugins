@@ -1,0 +1,12 @@
+﻿name: Cover Refresher
+description: Refresh scene covers from StashDB for ALL scenes (including organized)
+version: 0.1.0
+exec:
+  - python3
+  - cover_refresher.py
+interface: raw
+tasks:
+  - name: Refresh Scene Covers
+    description: Updates covers from StashDB for all scenes (organized scenes included)
+    defaultArgs:
+      mode: refresh_covers
