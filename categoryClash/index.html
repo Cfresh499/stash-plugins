@@ -1,0 +1,108 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Category Clash</title>
+    <style>
+        .clash-container {
+            padding: 40px;
+            text-align: center;
+            background: #1a1a2e;
+            color: white;
+        }
+        button {
+            background: #0f3460;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        .performer-card {
+            display: inline-block;
+            width: 300px;
+            margin: 20px;
+            padding: 20px;
+            background: #16213e;
+            border-radius: 12px;
+        }
+        img {
+            width: 100%;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="clash-container">
+        <h1>🏆 Category Clash</h1>
+        <p>If you see this, the plugin is loading!</p>
+        
+        <div id="categorySelect">
+            <button onclick="setCategory('face')">Face</button>
+            <button onclick="setCategory('breasts')">Breasts</button>
+            <button onclick="setCategory('ass')">Ass</button>
+            <button onclick="loadBattle()">Start Battle</button>
+        </div>
+        
+        <div id="battleArea">
+            <div>Click Start Battle to begin</div>
+        </div>
+    </div>
+
+    <script>
+        let currentCategory = 'overall';
+        
+        function setCategory(cat) {
+            currentCategory = cat;
+            console.log("Category set to:", cat);
+            alert("Category set to: " + cat);
+        }
+        
+        async function loadBattle() {
+            const area = document.getElementById('battleArea');
+            area.innerHTML = '<div>Loading performers...</div>';
+            
+            const query = '{ findPerformers(filter: { per_page: 10 }) { performers { id name image_path } } }';
+            try {
+                const res = await fetch('/graphql', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query })
+                });
+                const result = await res.json();
+                const performers = result.data?.findPerformers?.performers || [];
+                const eligible = performers.filter(p => p.image_path);
+                
+                if (eligible.length < 2) {
+                    area.innerHTML = '<div>Not enough performers with images.</div>';
+                    return;
+                }
+                
+                const a = eligible[0];
+                const b = eligible[1];
+                area.innerHTML = `
+                    <div class="performer-card">
+                        <img src="${a.image_path}" onerror="this.src=''">
+                        <h3>${a.name}</h3>
+                        <button onclick="vote('${a.id}', '${b.id}')">Vote for ${a.name}</button>
+                    </div>
+                    <div class="performer-card">
+                        <img src="${b.image_path}" onerror="this.src=''">
+                        <h3>${b.name}</h3>
+                        <button onclick="vote('${b.id}', '${a.id}')">Vote for ${b.name}</button>
+                    </div>
+                `;
+            } catch(err) {
+                area.innerHTML = '<div>Error loading: ' + err.message + '</div>';
+            }
+        }
+        
+        function vote(winnerId, loserId) {
+            alert("You voted for winner! ELO coming soon.");
+            loadBattle();
+        }
+        
+        loadBattle();
+    </script>
+</body>
+</html>

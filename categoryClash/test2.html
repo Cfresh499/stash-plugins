@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Category Clash Test</title>
+</head>
+<body>
+    <h1>Category Clash Test</h1>
+    <p>If you can see this, the page is loading.</p>
+    <button onclick="testGraphQL()">Test GraphQL</button>
+    <div id="result"></div>
+
+    <script>
+        function testGraphQL() {
+            document.getElementById('result').innerHTML = "Testing...";
+            fetch('/graphql', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ query: '{ version }' })
+            })
+            .then(r => r.json())
+            .then(data => {
+                document.getElementById('result').innerHTML = "Success: " + JSON.stringify(data);
+            })
+            .catch(err => {
+                document.getElementById('result').innerHTML = "Error: " + err.message;
+            });
+        }
+    </script>
+</body>
+</html>

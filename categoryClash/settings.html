@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Category Clash - Settings</title>
+    <style>
+        body {
+            background: #1a1a2e;
+            color: #eee;
+            font-family: sans-serif;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .card {
+            background: #16213e;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        h1 {
+            margin-top: 0;
+        }
+        .setting {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            background: #0f0f1a;
+            border: 1px solid #333;
+            color: #eee;
+            border-radius: 6px;
+        }
+        button {
+            background: #0f3460;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #1f4680;
+        }
+        .success {
+            background: #1a3a1a;
+            color: #4caf50;
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏆 Category Clash Settings</h1>
+        
+        <div class="card">
+            <div class="setting">
+                <label>ELO K-Factor</label>
+                <input type="number" id="kFactor" min="16" max="64" value="32">
+                <small>Higher = faster rating changes (16-64)</small>
+            </div>
+            
+            <div class="setting">
+                <label>Categories</label>
+                <input type="text" id="categories" value="Face,Breasts,Ass,Legs,Overall">
+                <small>Comma-separated list</small>
+            </div>
+            
+            <div class="setting">
+                <label>
+                    <input type="checkbox" id="syncToStash"> Sync to Stash Rating
+                </label>
+                <small>Update performer star rating when they win</small>
+            </div>
+            
+            <div class="setting">
+                <label>
+                    <input type="checkbox" id="showStashRating"> Show Stash Rating
+                </label>
+                <small>Display existing star rating during battles</small>
+            </div>
+            
+            <button id="saveBtn">Save Settings</button>
+            <div id="status" class="success"></div>
+        </div>
+        
+        <div class="card">
+            <h3>Data Management</h3>
+            <button id="exportBtn">📤 Export Ratings</button>
+            <button id="resetBtn" style="background:#5a1a1a; margin-left:10px;">🗑️ Reset All Ratings</button>
+        </div>
+    </div>
+    
+    <script>
+        // Load settings
+        document.getElementById('kFactor').value = localStorage.getItem('categoryClash_kFactor') || '32';
+        document.getElementById('categories').value = localStorage.getItem('categoryClash_categories') || 'Face,Breasts,Ass,Legs,Overall';
+        document.getElementById('syncToStash').checked = localStorage.getItem('categoryClash_syncToStash') === 'true';
+        document.getElementById('showStashRating').checked = localStorage.getItem('categoryClash_showStashRating') === 'true';
+        
+        function showMessage(msg, isError = false) {
+            const status = document.getElementById('status');
+            status.textContent = msg;
+            status.style.background = isError ? '#3a1a1a' : '#1a3a1a';
+            status.style.color = isError ? '#f44336' : '#4caf50';
+            status.style.display = 'block';
+            setTimeout(() => status.style.display = 'none', 3000);
+        }
+        
+        document.getElementById('saveBtn').onclick = () => {
+            localStorage.setItem('categoryClash_kFactor', document.getElementById('kFactor').value);
+            localStorage.setItem('categoryClash_categories', document.getElementById('categories').value);
+            localStorage.setItem('categoryClash_syncToStash', document.getElementById('syncToStash').checked);
+            localStorage.setItem('categoryClash_showStashRating', document.getElementById('showStashRating').checked);
+            showMessage('Settings saved!');
+        };
+        
+        document.getElementById('exportBtn').onclick = () => {
+            const ratings = localStorage.getItem('categoryClash_elo');
+            if (!ratings) {
+                showMessage('No ratings to export', true);
+                return;
+            }
+            const blob = new Blob([ratings], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `category-clash-ratings-${Date.now()}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showMessage('Ratings exported!');
+        };
+        
+        document.getElementById('resetBtn').onclick = () => {
+            if (confirm('Delete all ratings? This cannot be undone.')) {
+                localStorage.removeItem('categoryClash_elo');
+                showMessage('All ratings reset');
+            }
+        };
+    </script>
+</body>
+</html>
