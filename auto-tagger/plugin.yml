@@ -1,0 +1,19 @@
+name: Auto Tagger
+description: Automatically tags new scenes with a predefined tag
+version: 1.0.0
+exec:
+  - plugin.js
+interface: js
+
+hooks:
+  - name: Auto Tag Scenes
+    triggeredBy:
+      - Scene.Create.Post
+
+settings:
+  defaultTagId:
+    displayName: Default Tag ID
+    type: STRING
+  enableAutoTag:
+    displayName: Enable Auto Tagging
+    type: BOOLEAN
