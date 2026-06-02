@@ -1,21 +1,19 @@
-plugins:
-  - id: auto-tagger
-    name: Auto Tagger
-    description: Automatically tags new scenes with a predefined tag
-    version: 1.0.0
-    url: https://github.com/Cfresh499/stash-plugins
-    download: https://github.com/Cfresh499/stash-plugins/releases/download/auto-tagger-v1.0.0/auto-tagger.zip
-    sha256: ""
-    date: "2026-06-02"
+- id: auto-tagger
+  name: Auto Tagger
+  description: Automatically tags new scenes with a predefined tag
+  version: 1.0.0
+  url: https://github.com/Cfresh499/stash-plugins
+  download: https://github.com/Cfresh499/stash-plugins/releases/download/auto-tagger-v1.0.0/auto-tagger.zip
+  sha256: ""
 
-  - id: coverRefresher
-    name: Cover Refresher
-    description: Refresh scene covers from StashDB for ALL scenes (including organized)
-    version: 0.1.0
-    path: coverRefresher
+- id: coverRefresher
+  name: Cover Refresher
+  description: Refresh scene covers from StashDB for ALL scenes (including organized)
+  version: 0.1.0
+  path: coverRefresher
 
-  - id: categoryClash
-    name: Category Clash
-    description: Head-to-head performer battles with category-specific images
-    version: 0.4.0
-    path: categoryClash
+- id: categoryClash
+  name: Category Clash
+  description: Head-to-head performer battles with category-specific images
+  version: 0.4.0
+  path: categoryClash
